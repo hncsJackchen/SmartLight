@@ -10,7 +10,7 @@
 #define PIN_LED             2    // D4 — 板载 LED（低电平点亮，运行时常亮）
 
 // ===== 阈值 =====
-#define LUX_THRESHOLD       100.0f   // 光照阈值 (lx)，< 此值视为「暗/灯关」
+#define LUX_THRESHOLD       1.0f     // 光照阈值 (lx)，< 此值视为「暗」
 #define DIST_THRESHOLD_CM   20.0f    // 进门距离阈值 (cm)
 #define DIST_MIN_VALID_CM   2.0f     // HC-SR04 盲区，小于此值判无效
 
@@ -29,8 +29,6 @@
 #define CMD_LIGHT_OFF       "OFF"
 #define ACK_ON_OK           "ON_OK"
 #define ACK_OFF_OK          "OFF_OK"
-#define ACK_ON_SKIP         "ON_SKIP"
-#define ACK_OFF_SKIP        "OFF_SKIP"
 #define ACK_ERROR           "ERROR"
 
 // ===== 采样 =====
