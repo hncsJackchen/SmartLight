@@ -15,10 +15,10 @@
 #define DIST_MIN_VALID_CM   2.0f     // HC-SR04 盲区，小于此值判无效
 
 // ===== 舵机动作 =====
-#define SERVO_ANGLE_PRESS   90    // 拨开关角度（方向由安装决定，可调）
-#define SERVO_ANGLE_HOME    0     // 回正角度
-#define SERVO_HOLD_MS       450   // 拨动停留时间
-#define SERVO_SETTLE_MS     300   // 回正后稳定时间
+#define SERVO_ANGLE_PRESS   180    // 开灯角度（顺时针 180°）
+#define SERVO_ANGLE_HOME    0     // 关灯角度（逆时针 0°）
+#define SERVO_HOLD_MS       450   // 到位后停留时间
+#define SERVO_SETTLE_MS     300   // 到位后稳定时间
 
 // ===== 语音串口 =====
 // UART0：TX = GPIO1（D10）、RX = GPIO3（D9），接 ASRPRO

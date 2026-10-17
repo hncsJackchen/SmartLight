@@ -25,11 +25,11 @@ void AppLight::tick() {
 void AppLight::handleVoice(VoiceCommand cmd) {
   switch (cmd) {
     case VoiceCommand::LightOn:
-      switch_.press();          // 无条件拨动一次，不判断当前状态
+      switch_.on();          // 开灯：顺时针转到 180°
       voice_.reply(ACK_ON_OK);
       break;
     case VoiceCommand::LightOff:
-      switch_.press();
+      switch_.off();         // 关灯：逆时针转到 0°
       voice_.reply(ACK_OFF_OK);
       break;
     default:
@@ -51,10 +51,10 @@ void AppLight::processAuto() {
   bool near = (dist >= 0 && dist < DIST_THRESHOLD_CM);      // 有人贴近
   bool dark = (lux >= 0 && lux < LUX_THRESHOLD);            // 环境暗
 
-  // 进门上升沿 且 环境暗 -> 拨动开灯（无状态，每次进门都拨）
+  // 进门上升沿 且 环境暗 -> 自动开灯（转到 180°）
   if (near && !nearPrev_ && dark) {
     LOG("auto on: lux=%.1f dist=%.1f cm", lux, dist);
-    switch_.press();
+    switch_.on();
   }
   nearPrev_ = near;
 }
