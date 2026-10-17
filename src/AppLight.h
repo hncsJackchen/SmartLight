@@ -18,7 +18,7 @@ private:
   ServoSwitch switch_;
   Voice voice_;
 
-  bool nearPrev_ = false;                // 进门上升沿检测
+  bool trigFlag_ = false;                // 触发标记：条件满足置有效，条件解除复位
   uint32_t lastSample_ = 0;              // 采样节流
   uint32_t lastLog_ = 0;                 // 日志打印节流
 };

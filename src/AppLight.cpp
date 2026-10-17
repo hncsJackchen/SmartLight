@@ -41,20 +41,24 @@ void AppLight::processAuto() {
   float lux = sensors_.readLightLux();
   float dist = sensors_.readDistanceCm();
 
-  // 定期打印采集数据（受 DEBUG_LOG 控制）
+  bool near = (dist >= 0 && dist < DIST_THRESHOLD_CM);      // 有人贴近
+  bool dark = (lux >= 0 && lux < LUX_THRESHOLD);            // 环境暗
+  bool cond = near && dark;                                 // 触发条件
+
+  // 定期打印采集与触发标记状态（受 DEBUG_LOG 控制）
   uint32_t now = millis();
   if (now - lastLog_ >= LOG_INTERVAL_MS) {
     lastLog_ = now;
-    LOG("lux=%.1f lx, dist=%.1f cm", lux, dist);
+    LOG("lux=%.1f lx, dist=%.1f cm, cond=%d flag=%d", lux, dist, (int)cond, (int)trigFlag_);
   }
 
-  bool near = (dist >= 0 && dist < DIST_THRESHOLD_CM);      // 有人贴近
-  bool dark = (lux >= 0 && lux < LUX_THRESHOLD);            // 环境暗
-
-  // 进门上升沿 且 环境暗 -> 自动开灯（转到 180°）
-  if (near && !nearPrev_ && dark) {
-    LOG("auto on: lux=%.1f dist=%.1f cm", lux, dist);
+  // 触发标记：条件满足且仍无效 -> 置有效并开灯；条件解除 -> 复位无效
+  if (cond && !trigFlag_) {
+    trigFlag_ = true;
+    LOG("auto on: flag 0->1, lux=%.1f dist=%.1f cm", lux, dist);
     switch_.on();
+  } else if (!cond && trigFlag_) {
+    trigFlag_ = false;
+    LOG("auto reset: flag 1->0, lux=%.1f dist=%.1f cm", lux, dist);
   }
-  nearPrev_ = near;
 }
