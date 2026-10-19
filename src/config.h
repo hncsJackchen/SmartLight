@@ -7,6 +7,7 @@
 #define PIN_LIGHT_SCL       5    // D1 — BH1750 时钟
 #define PIN_SR04_TRIG       13   // D7 — HC-SR04 触发
 #define PIN_SR04_ECHO       12   // D6 — HC-SR04 回波（3.3V 供电直连）
+#define PIN_PIR             16   // D0 — PIR 人体红外输出（高电平=检测到人）
 #define PIN_LED             2    // D4 — 板载 LED（低电平点亮，运行时常亮）
 
 // ===== 阈值 =====

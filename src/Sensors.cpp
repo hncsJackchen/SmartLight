@@ -22,6 +22,8 @@ void Sensors::begin() {
   pinMode(PIN_SR04_TRIG, OUTPUT);
   pinMode(PIN_SR04_ECHO, INPUT);
   digitalWrite(PIN_SR04_TRIG, LOW);
+
+  pinMode(PIN_PIR, INPUT);   // PIR 人体红外输出
 }
 
 uint8_t Sensors::probeLightAddr() {
@@ -55,6 +57,10 @@ float Sensors::readLightLux() {
   uint16_t raw = 0;
   if (!readBh1750(raw)) return -1;
   return raw / BH_DIV;
+}
+
+bool Sensors::readPir() {
+  return digitalRead(PIN_PIR) == HIGH;
 }
 
 float Sensors::readDistanceCm() {

@@ -12,6 +12,9 @@ public:
   // 距离 (cm)；超时/无回波返回 -1
   float readDistanceCm();
 
+  // PIR 人体红外：是否检测到人（高电平）
+  bool readPir();
+
   // 是否探测到光传感器
   bool hasLight() const { return lightAddr_ != 0; }
 

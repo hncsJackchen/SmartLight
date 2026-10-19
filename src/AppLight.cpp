@@ -42,23 +42,25 @@ void AppLight::processAuto() {
   float dist = sensors_.readDistanceCm();
 
   bool distValid = (dist >= 0);                             // 测距有效（-1 表示无效/超时）
-  bool near = (distValid && dist < DIST_THRESHOLD_CM);      // 有人贴近
+  bool near = (distValid && dist < DIST_THRESHOLD_CM);      // HC-SR04 有人贴近
+  bool pir = sensors_.readPir();                            // PIR 检测到人体
+  bool presence = near || pir;                              // 任一传感器检测到有人
   bool dark = (lux >= 0 && lux < LUX_THRESHOLD);            // 环境暗
-  bool cond = near && dark;                                 // 触发条件
+  bool cond = presence && dark;                             // 触发条件
 
   // 定期打印采集与触发标记状态（受 DEBUG_LOG 控制）
   uint32_t now = millis();
   if (now - lastLog_ >= LOG_INTERVAL_MS) {
     lastLog_ = now;
-    LOG("lux=%.1f lx, dist=%.1f cm, cond=%d flag=%d", lux, dist, (int)cond, (int)trigFlag_);
+    LOG("lux=%.1f lx, dist=%.1f cm, pir=%d cond=%d flag=%d", lux, dist, (int)pir, (int)cond, (int)trigFlag_);
   }
 
-  // 触发标记：条件满足且仍无效 -> 置有效并开灯；测距有效且条件解除才复位（测距无效不重置）
+  // 触发标记：任一传感器有人且暗、且仍无效 -> 置有效并开灯；测距有效且都无人才复位
   if (cond && !trigFlag_) {
     trigFlag_ = true;
     LOG("auto on: flag 0->1, lux=%.1f dist=%.1f cm", lux, dist);
     switch_.on();
-  } else if (distValid && !cond && trigFlag_) {
+  } else if (distValid && !presence && trigFlag_) {
     trigFlag_ = false;
     LOG("auto reset: flag 1->0, lux=%.1f dist=%.1f cm", lux, dist);
   }
