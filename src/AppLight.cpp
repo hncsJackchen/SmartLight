@@ -41,7 +41,8 @@ void AppLight::processAuto() {
   float lux = sensors_.readLightLux();
   float dist = sensors_.readDistanceCm();
 
-  bool near = (dist >= 0 && dist < DIST_THRESHOLD_CM);      // 有人贴近
+  bool distValid = (dist >= 0);                             // 测距有效（-1 表示无效/超时）
+  bool near = (distValid && dist < DIST_THRESHOLD_CM);      // 有人贴近
   bool dark = (lux >= 0 && lux < LUX_THRESHOLD);            // 环境暗
   bool cond = near && dark;                                 // 触发条件
 
@@ -52,12 +53,12 @@ void AppLight::processAuto() {
     LOG("lux=%.1f lx, dist=%.1f cm, cond=%d flag=%d", lux, dist, (int)cond, (int)trigFlag_);
   }
 
-  // 触发标记：条件满足且仍无效 -> 置有效并开灯；条件解除 -> 复位无效
+  // 触发标记：条件满足且仍无效 -> 置有效并开灯；测距有效且条件解除才复位（测距无效不重置）
   if (cond && !trigFlag_) {
     trigFlag_ = true;
     LOG("auto on: flag 0->1, lux=%.1f dist=%.1f cm", lux, dist);
     switch_.on();
-  } else if (!cond && trigFlag_) {
+  } else if (distValid && !cond && trigFlag_) {
     trigFlag_ = false;
     LOG("auto reset: flag 1->0, lux=%.1f dist=%.1f cm", lux, dist);
   }
