@@ -25,11 +25,11 @@ void AppLight::tick() {
 void AppLight::handleVoice(VoiceCommand cmd) {
   switch (cmd) {
     case VoiceCommand::LightOn:
-      switch_.on();          // 开灯：顺时针转到 180°
+      switch_.on();          // 开灯：中位 90° 顺转 90°（到 180°）再回正
       voice_.reply(ACK_ON_OK);
       break;
     case VoiceCommand::LightOff:
-      switch_.off();         // 关灯：逆时针转到 0°
+      switch_.off();         // 关灯：中位 90° 逆转 90°（到 0°）再回正
       voice_.reply(ACK_OFF_OK);
       break;
     default:
