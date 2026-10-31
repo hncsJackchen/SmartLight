@@ -56,9 +56,9 @@
 | SD2 | 🟡 Flash | D4 | ✅ 板载 LED（GPIO2，常亮指示） |
 | SD1 | 🟡 Flash MOSI | 3V3 | 电源 3.3V |
 | CMD | 🟡 Flash CS | GND | 地 |
-| SD0 | 🟡 Flash MISO | D5 | ✅ SG90 信号（GPIO14） |
+| SD0 | 🟡 Flash MISO | D5 | ✅ HC-SR04 Trig（GPIO14） |
 | CLK | 🟡 Flash SCK | D6 | ✅ HC-SR04 Echo（GPIO12） |
-| GND | 地 | D7 | ✅ HC-SR04 Trig（GPIO13） |
+| GND | 地 | D7 | ✅ SG90 信号（GPIO13） |
 | 3V3 | 电源 3.3V | D8 | 🟡 GPIO15 启动脚 |
 | EN | 使能（CH_PD） | D9 | ✅ ASRPRO→ESP RX（GPIO3） |
 | RST | 复位 | D10 | ✅ ESP→ASRPRO TX（GPIO1） |
@@ -87,7 +87,7 @@
 
 | 外设引脚 | ESP8266 引脚 | 备注 |
 |---|---|---|
-| Trig | GPIO13 (D7) | — |
+| Trig | GPIO14 (D5) | — |
 | Echo | GPIO12 (D6) | 3.3V 供电下 Echo 约 3.3V，直连 |
 | VCC | 3.3V | — |
 | GND | GND | — |
@@ -98,7 +98,7 @@
 
 | 外设引脚 | ESP8266 引脚 | 备注 |
 |---|---|---|
-| 信号线（S） | GPIO14 (D5) | PWM |
+| 信号线（S） | GPIO13 (D7) | PWM |
 | VCC | 5V（VU） | **勿接 3.3V**，否则扭矩不足 |
 | GND | GND | — |
 
